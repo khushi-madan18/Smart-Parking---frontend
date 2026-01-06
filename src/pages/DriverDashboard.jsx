@@ -1,13 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { 
-    Bell, Car, User, MapPin, Clock, ChevronRight, CheckCircle
+    Bell, Car, User, MapPin, Clock, ChevronRight, CheckCircle, LogOut
 } from 'lucide-react';
 import { Workflow } from '../utils/workflow';
 import './DriverDashboard.css';
 
 const DriverDashboard = () => {
     const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem('currentUser');
+        navigate('/login');
+    };
     const [currentUser] = useState(() => JSON.parse(localStorage.getItem('currentUser') || 'null'));
     
     const [pendingRequests, setPendingRequests] = useState([]);
@@ -63,7 +67,8 @@ const DriverDashboard = () => {
         Workflow.acceptRequest(req.id, currentUser);
         // Force local update immediately for better UX
         setActiveJob({...req, status: 'assigned', valetId: currentUser.id});
-        // We don't manually clear pendingRequests here; the next poll will reflect the change (it will disappear from pending)
+        // Remove from pending immediately to prevent duplicate display
+        setPendingRequests(prev => prev.filter(p => p.id !== req.id));
     };
 
     const handleStartJob = () => {
@@ -152,10 +157,15 @@ const DriverDashboard = () => {
                         <p className="welcome-text">Driver Console</p>
                         <h2 className="driver-name">Welcome back,<br/>{currentUser.name}</h2>
                     </div>
-                    <button className="notif-btn">
-                        <Bell size={20} />
-                        {pendingRequests.length > 0 && <span className="notif-badge">{pendingRequests.length}</span>}
-                    </button>
+                    <div style={{display:'flex', gap:'10px'}}>
+                        <button className="notif-btn">
+                            <Bell size={20} />
+                            {pendingRequests.length > 0 && <span className="notif-badge">{pendingRequests.length}</span>}
+                        </button>
+                        <button onClick={handleLogout} className="notif-btn" style={{background: 'rgba(255,255,255,0.2)'}}>
+                            <LogOut size={20} color="white" />
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -253,12 +263,11 @@ const DriverDashboard = () => {
                                 </button>
                             ) : (
                                 <button 
-                                    className={`assignment-btn ${activeJob.status === 'retrieving' ? 'arrived-btn' : 'start'}`}
-                                    style={activeJob.status === 'retrieving' ? {background:'#ea580c', color:'white'} : {}} 
-                                    onClick={activeJob.status === 'retrieving' ? handleMarkArrived : handleStartJob}
+                                    className={`assignment-btn ${isRetrievalTask ? 'retrieve-btn' : 'start'}`}
+                                    style={isRetrievalTask ? {background:'#ea580c', color:'white'} : {}} 
+                                    onClick={handleStartJob}
                                 >
-                                    {activeJob.status === 'retrieving' ? 'Mark Arrived' : 
-                                     isRetrievalTask ? 'Start Retrieval' : 'Start Parking'}
+                                    {isRetrievalTask ? 'Start Retrieval' : 'Start Parking'}
                                 </button>
                             )}
                         </div>

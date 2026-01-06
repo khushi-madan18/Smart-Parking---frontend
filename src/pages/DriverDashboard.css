@@ -134,8 +134,8 @@
 }
 
 .task-badge.retrieve {
-    background: #fff7ed;
-    color: #ea580c;
+    background: #fef3c7; /* Amber-100 */
+    color: #d97706; /* Amber-700 */
 }
 
 /* Detail List */

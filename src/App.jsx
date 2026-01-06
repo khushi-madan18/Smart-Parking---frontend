@@ -13,6 +13,10 @@ import RegisterVehicle from './pages/RegisterVehicle';
 import VehicleRetrieval from './pages/VehicleRetrieval';
 import ParkingHistory from './pages/ParkingHistory';
 import Settings from './pages/Settings';
+import ManageVehicles from './pages/ManageVehicles';
+
+import HelpSupport from './pages/HelpSupport';
+import FAQ from './pages/FAQ';
 import ManagerDashboard from './pages/ManagerDashboard';
 import AddDriver from './pages/AddDriver';
 import SuperAdmin from './pages/SuperAdmin';
@@ -48,7 +52,9 @@ const AppLayout = () => {
         ...bottomNavRoutes,
         '/', '/login', '/signup', 
         '/scan', '/booking', '/register-vehicle', '/retrieval', '/roles', '/dashboard',
-        '/manager', '/add-driver', '/super-admin', '/driver'
+        '/manager', '/add-driver', '/super-admin', '/driver',
+        '/manage-vehicles', '/add-vehicle',
+        '/help-support', '/faq'
     ];
     
     const showSidebar = !hideSidebarRoutes.includes(location.pathname);
@@ -80,7 +86,11 @@ const AppLayout = () => {
             <Route path="/retrieval" element={<ProtectedRoute allowedRoles={['user']}><VehicleRetrieval /></ProtectedRoute>} />
             <Route path="/history" element={<ProtectedRoute allowedRoles={['user']}><ParkingHistory /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute allowedRoles={['user']}><Settings /></ProtectedRoute>} />
+            <Route path="/manage-vehicles" element={<ProtectedRoute allowedRoles={['user']}><ManageVehicles /></ProtectedRoute>} />
 
+            <Route path="/help-support" element={<ProtectedRoute allowedRoles={['user']}><HelpSupport /></ProtectedRoute>} />
+            <Route path="/faq" element={<ProtectedRoute allowedRoles={['user']}><FAQ /></ProtectedRoute>} />
+            
             {/* Protected Admin/Driver Routes */}
             <Route path="/manager" element={<ProtectedRoute allowedRoles={['manager']}><ManagerDashboard /></ProtectedRoute>} />
             <Route path="/add-driver" element={<ProtectedRoute allowedRoles={['manager']}><AddDriver /></ProtectedRoute>} />

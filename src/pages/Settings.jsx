@@ -22,11 +22,18 @@ const Settings = () => {
         navigate('/login');
     };
 
+    const getVehicleCount = () => {
+        const stored = JSON.parse(localStorage.getItem('userVehicles') || '[]');
+        const myVehicles = stored.filter(v => v.userId === currentUser.id);
+        return myVehicles.length;
+    };
+
     const menuItems = [
         {
             icon: <Car size={20} />,
             title: 'Manage Vehicles',
-            subtitle: '3 vehicles saved'
+            subtitle: `${getVehicleCount()} vehicles saved`,
+            path: '/manage-vehicles'
         },
         {
             icon: <FileText size={20} />,
@@ -36,12 +43,14 @@ const Settings = () => {
         {
             icon: <HelpCircle size={20} />,
             title: 'Help & Support',
-            subtitle: 'Get assistance'
+            subtitle: 'Get assistance',
+            path: '/help-support'
         },
         {
             icon: <MessageCircle size={20} />,
             title: 'FAQ',
-            subtitle: 'Frequently Asked Questions'
+            subtitle: 'Frequently Asked Questions',
+            path: '/faq'
         }
     ];
 
@@ -73,7 +82,12 @@ const Settings = () => {
 
                 {/* Menu List */}
                 {menuItems.map((item, index) => (
-                    <div key={index} className="menu-item">
+                    <div 
+                        key={index} 
+                        className="menu-item" 
+                        onClick={() => item.path && navigate(item.path)}
+                        style={{ cursor: item.path ? 'pointer' : 'default' }}
+                    >
                         <div className="menu-icon">{item.icon}</div>
                         <div className="menu-text">
                             <h4>{item.title}</h4>

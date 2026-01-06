@@ -43,12 +43,16 @@ const ParkingTicket = () => {
 
   }, [currentUser, navigate]);
 
+  const isRetrieval = activeRequest && ['retrieval_requested', 'retrieving', 'vehicle_arrived'].includes(activeRequest.status);
+
   const handleRetrieval = () => {
       if (activeRequest) {
-          // Initiate retrieval
-          Workflow.updateStatus(activeRequest.id, 'retrieval_requested');
+          // Only initiate retrieval if not already in progress
+          if (!isRetrieval) {
+              Workflow.updateStatus(activeRequest.id, 'retrieval_requested');
+          }
           
-          // Navigate to Retrieval Timeline Page as per latest flow
+          // Navigate to Retrieval Timeline Page
           navigate('/retrieval');
       }
   };
@@ -119,8 +123,8 @@ const ParkingTicket = () => {
                <Clock size={18} />
                <div className="row-content">
                   <span className="row-label">Entry Time</span>
-                  <span className="row-value">{new Date(activeRequest.timestamp).toLocaleString([], {weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})}</span>
-                  <span className="row-value sub">Duration: {formatDuration(activeRequest.timestamp)}</span>
+                  <span className="row-value">{new Date(activeRequest.parkedTimestamp || activeRequest.timestamp).toLocaleString('en-US', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })}</span>
+                  <span className="row-value sub">Duration: {formatDuration(activeRequest.parkedTimestamp || activeRequest.timestamp)}</span>
                </div>
             </div>
 
@@ -144,7 +148,7 @@ const ParkingTicket = () => {
             onClick={handleRetrieval}
          >
             <Car size={20} />
-            <span>Get My Car</span>
+            <span>{isRetrieval ? 'Track Retrieval' : 'Get My Car'}</span>
          </button>
 
          <button className="secondary-btn">

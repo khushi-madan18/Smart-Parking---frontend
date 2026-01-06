@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, User, Hash, Car, Phone, Zap } from 'lucide-react';
 import './RegisterVehicle.css';
 
 const RegisterVehicle = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showBrandDropdown, setShowBrandDropdown] = useState(false);
   const [showModelDropdown, setShowModelDropdown] = useState(false);
   
@@ -269,8 +270,33 @@ const RegisterVehicle = () => {
                     brand: selectedBrand,
                     model: selectedModel
                 };
+                
+                // 1. Save as current active profile (for booking)
                 localStorage.setItem('userProfile', JSON.stringify(profile));
-                navigate('/booking');
+                
+                // 2. Add to Manage Vehicles list (if not exists)
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                const allVehicles = JSON.parse(localStorage.getItem('userVehicles') || '[]');
+                
+                // Simple duplicate check by plate
+                const exists = allVehicles.some(v => v.plate === formData.plateNumber);
+                if (!exists) {
+                    allVehicles.push({
+                        id: Date.now(),
+                        userId: currentUser.id,
+                        model: `${selectedBrand} ${selectedModel}`,
+                        plate: formData.plateNumber,
+                        ...formData // save other details if needed
+                    });
+                    localStorage.setItem('userVehicles', JSON.stringify(allVehicles));
+                }
+
+                // 3. Navigate back based on source
+                if (location.state?.source === 'settings') {
+                    navigate('/manage-vehicles');
+                } else {
+                    navigate('/booking');
+                }
             }} 
         >
             Save Vehicle Profile

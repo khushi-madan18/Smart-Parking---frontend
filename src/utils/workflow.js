@@ -9,15 +9,14 @@ export const Workflow = {
 
     getPending: () => {
         const all = Workflow.getAll();
-        // Return initial requests OR retrieval requests (so any driver can pick them up)
-        return all.filter(r => r.status === 'requested' || r.status === 'retrieval_requested');
+        // Return initial requests OR retrieval requests that are NOT yet assigned to a valet
+        return all.filter(r => (r.status === 'requested' || r.status === 'retrieval_requested') && !r.valetId);
     },
 
     getUserActiveRequests: (userId) => {
         const all = Workflow.getAll();
-        // Return requests that are active (not cancelled or full history completed if needed)
-        // For simplicity, let's just return the latest one that isn't 'archived'
-        return all.filter(r => r.userId === userId && r.status !== 'archived').sort((a, b) => b.id - a.id);
+        // Return requests that are active (not cancelled, archived, or completed)
+        return all.filter(r => r.userId === userId && r.status !== 'archived' && r.status !== 'completed').sort((a, b) => b.id - a.id);
     },
 
     getDriverActive: (driverId) => {
@@ -70,6 +69,22 @@ export const Workflow = {
         const idx = all.findIndex(r => r.id === requestId);
         if (idx !== -1) {
             all[idx].status = newStatus;
+
+            // If retrieval requested, clear valet assignment so any driver can pick it up
+            if (newStatus === 'retrieval_requested') {
+                all[idx].valetId = null;
+                all[idx].valetName = null;
+            }
+
+            // Capture Parked Time (Actual Entry)
+            if (newStatus === 'parked' && !all[idx].parkedTimestamp) {
+                all[idx].parkedTimestamp = new Date().toISOString();
+            }
+
+            // Capture Exit Time if completing
+            if (newStatus === 'completed') {
+                all[idx].exitTimestamp = new Date().toISOString();
+            }
             localStorage.setItem(Workflow.KEY_REQUESTS, JSON.stringify(all));
         }
     }
