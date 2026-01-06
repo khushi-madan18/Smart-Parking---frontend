@@ -1,0 +1,407 @@
+/* Main Container */
+.home-page {
+    background-color: #f8f9fc;
+    min-height: 100vh;
+    padding-bottom: 80px; /* Space for bottom nav */
+}
+
+/* Header Section */
+.app-header {
+    background: #4f46e5; /* Indigo 600 */
+    padding: 24px;
+    border-radius: 0 0 24px 24px;
+    color: white;
+    margin-bottom: 24px; /* Standard margin */
+}
+
+.header-content h1 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.header-content p {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 4px 0 0 0;
+}
+
+/* Promo Banner (Standard Block) */
+.promo-banner {
+    margin-top: 24px; /* Space from Welcome text */
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+/* Background Image Simulation for Promo */
+.promo-banner::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background: url('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=300&q=80') no-repeat right center;
+    background-size: cover;
+    opacity: 0.2;
+    mask-image: linear-gradient(to right, transparent, black);
+    -webkit-mask-image: linear-gradient(to right, transparent, black);
+}
+
+.promo-text {
+    z-index: 1;
+}
+
+.promo-badge {
+    background: #FFD700;
+    color: #000;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.promo-banner h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    color: white;
+}
+
+.promo-banner p {
+    font-size: 11px;
+    margin: 0;
+    opacity: 0.9;
+    color: white;
+}
+
+/* Main Content Area */
+.main-content {
+    padding: 0 24px;
+    margin-top: 0;
+}
+
+/* Action Card (Scan to Park) */
+.action-card {
+    background: #fff7ed; /* Light orange tint match */
+    border: 1px solid #ffedd5;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.icon-wrapper.orange-gradient {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-text h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 2px 0;
+}
+
+.card-text p {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+}
+
+.card-arrow {
+    margin-left: auto;
+    color: #94a3b8;
+    width: 20px;
+    height: 20px;
+}
+
+/* List Section */
+.list-section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 16px;
+}
+
+.history-card {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    border: 1px solid #f1f5f9;
+}
+
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.place-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.status-badge.completed {
+    background: #dcfce7;
+    color: #16a34a;
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: lowercase;
+}
+
+.card-divider {
+    height: 1px;
+    background: #f1f5f9;
+    margin: 12px 0;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.duration span {
+    color: #94a3b8;
+}
+
+/* Responsive tweaks */
+@media (min-width: 768px) {
+    .home-page {
+        max-width: 600px;
+        margin: 0 auto;
+        box-shadow: 0 0 40px rgba(0,0,0,0.1);
+    }
+}
+
+/* Status Banner Styles for Active Workflow */
+.status-banner {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #f1f5f9;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-banner.waiting { /* Yellow/Orange */
+    border-left: 4px solid #f59e0b;
+    background: #fffbeb;
+}
+
+.status-banner.assigned { /* Blue */
+    border-left: 4px solid #3b82f6;
+    background: #eff6ff;
+}
+
+.status-banner.parked { /* Green */
+    border-left: 4px solid #10b981;
+    background: #ecfdf5;
+}
+
+.status-banner.retrieving { /* Purple */
+    border-left: 4px solid #8b5cf6;
+    background: #f5f3ff;
+}
+
+.status-icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    color: #475569;
+}
+
+.status-banner.waiting .status-icon-box { color: #d97706; }
+.status-banner.assigned .status-icon-box { color: #2563eb; }
+.status-banner.parked .status-icon-box { color: #059669; }
+.status-banner.retrieving .status-icon-box { color: #7c3aed; }
+
+.status-info h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 2px 0;
+    color: #1e293b;
+}
+
+.status-info p {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+}
+
+.retrieve-btn-sm {
+    margin-left: auto;
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.retrieve-btn-sm:active {
+    transform: scale(0.96);
+}
+
+/* Active Parking Section Header */
+.active-section h3 {
+    margin: 24px 0 12px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Green Active Parking Card */
+.active-parking-card {
+    background: #ecfdf5; /* Light Green */
+    border: 1px solid #d1fae5;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.active-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.mall-icon {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.active-details {
+    flex: 1;
+    margin-left: 12px;
+}
+
+.active-details h4 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.active-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.active-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.active-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.status-pill.green {
+    background: #059669;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-pill .dot {
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+}
+
+.retrieve-link-btn {
+    background: none;
+    border: none;
+    color: #059669;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* Update Scan Card Icon Color to partial match (Yellow/Orange) */
+.icon-wrapper.orange-gradient {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+}

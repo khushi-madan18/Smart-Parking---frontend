@@ -1,0 +1,295 @@
+.add-driver-page {
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #f8f9fc;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-header {
+  background: #1e293b;
+  padding: 24px;
+  padding-top: 20px;
+  color: white;
+  margin-bottom: 24px;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.header-row h2 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.form-header p {
+  font-size: 13px;
+  opacity: 0.7;
+  padding-left: 40px; /* Align with title */
+  margin: 0;
+}
+
+/* Form Container */
+.form-content {
+  padding: 0 24px 40px 24px;
+}
+
+/* Photo Upload */
+.photo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.section-label {
+    align-self: flex-start;
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 16px;
+}
+
+.upload-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px dashed #cbd5e1;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #94a3b8;
+}
+
+.upload-circle span {
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+/* Sections */
+.form-section {
+    margin-bottom: 24px;
+}
+
+.form-section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 16px;
+}
+
+/* Inputs */
+.input-group {
+    margin-bottom: 16px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #475569;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px 12px 42px; /* Space for icon */
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #1e293b;
+    outline: none;
+    transition: border-color 0.2s;
+    background: white;
+}
+
+.form-input:focus {
+    border-color: #4834d4;
+    box-shadow: 0 0 0 3px rgba(72, 52, 212, 0.1);
+}
+
+/* License Upload */
+.upload-rect {
+    width: 100%;
+    height: 140px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    background: #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.upload-rect span {
+    font-size: 12px;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    background: #e2e8f0; /* Disabled state color initially */
+    color: #94a3b8;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: not-allowed;
+    transition: all 0.2s;
+}
+
+.submit-btn.active {
+    background: #1e293b; /* Dark theme button */
+    color: white;
+    cursor: pointer;
+}
+
+/* Camera Custom Overlay - Modal Style */
+.camera-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Dark backdrop */
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.camera-modal {
+    width: 90%;
+    max-width: 350px;
+    background: black;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.camera-video {
+    width: 100%;
+    height: 400px; /* Fixed height for the modal view */
+    object-fit: cover;
+    background: #111;
+}
+
+.camera-controls {
+    padding: 20px;
+    background: #1e293b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.capture-btn {
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.capture-btn:active {
+    transform: scale(0.9);
+}
+
+.capture-inner {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #ddd;
+}
+
+.close-camera-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Photo Previews */
+.upload-circle.has-image,
+.upload-rect.has-image {
+    border: none;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Retake Overlay for both circle and rect */
+.retake-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.upload-circle:hover .retake-overlay,
+.upload-rect:hover .retake-overlay {
+    opacity: 1;
+}

@@ -1,0 +1,82 @@
+/* Role Selector Page Container */
+.role-container {
+    padding: 32px 24px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.role-title {
+    margin-bottom: 32px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.roles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.role-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.role-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    border-color: #cbd5e1;
+}
+
+.icon-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    color: white;
+}
+
+/* Role Specific Colors */
+.icon-box.user {
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+}
+
+.icon-box.driver {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+}
+
+.icon-box.manager {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+}
+
+.icon-box.admin {
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+.role-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #334155;
+}

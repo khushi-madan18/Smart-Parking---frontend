@@ -1,0 +1,114 @@
+.history-page {
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #f8f9fc;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-header {
+  background: #4834d4;
+  padding: 24px;
+  padding-top: 20px;
+  color: white;
+  border-radius: 0 0 24px 24px;
+  margin-bottom: 24px;
+}
+
+.history-header h2 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.history-header p {
+    font-size: 13px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.history-list {
+    padding: 0 24px 80px 24px; /* Padding for bottom nav */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.history-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #f1f2f6;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.place-info h3 {
+    margin: 0 0 4px 0;
+    font-size: 15px;
+    color: #2d3436;
+    font-weight: 600;
+}
+
+.location-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #636e72;
+    font-size: 12px;
+}
+
+.cost-info {
+    text-align: right;
+}
+
+.price {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: #2d3436;
+    margin-bottom: 4px;
+}
+
+.status-badge {
+    background: #e6fffa;
+    color: #00b894;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.card-divider {
+    height: 1px;
+    background: #f1f2f6;
+    margin: 0 0 12px 0;
+}
+
+.card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #636e72;
+    font-size: 12px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.expand-icon {
+    color: #b2bec3;
+}

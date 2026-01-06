@@ -1,0 +1,181 @@
+.settings-page {
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #f8f9fc;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-header {
+  background: #4834d4;
+  padding: 24px;
+  padding-top: 20px;
+  color: white;
+  border-radius: 0 0 24px 24px;
+  margin-bottom: 24px;
+}
+
+.settings-header h2 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.settings-header p {
+    font-size: 13px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.settings-content {
+    padding: 0 24px 80px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Profile Card */
+.profile-card {
+    background: #eef2ff;
+    border: 1px solid #e0e7ff;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    background: #4834d4;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    color: #2d3436;
+}
+
+.profile-info p {
+    margin: 0;
+    font-size: 13px;
+    color: #636e72;
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    color: #4834d4;
+    cursor: pointer;
+    padding: 8px;
+}
+
+/* Menu List */
+.menu-item {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid #f1f2f6;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.menu-item:active {
+    transform: scale(0.99);
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #636e72;
+}
+
+.menu-text {
+    flex: 1;
+}
+
+.menu-text h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    color: #2d3436;
+    font-weight: 500;
+}
+
+.menu-text p {
+    margin: 0;
+    font-size: 12px;
+    color: #b2bec3;
+}
+
+.arrow-icon {
+    color: #dfe6e9;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.settings-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-light {
+    background: white;
+    border: 1px solid #dfe6e9;
+    color: #2d3436;
+}
+
+.btn-dark {
+    background: #2d3436;
+    border: 1px solid #2d3436;
+    color: white;
+}
+
+.btn-danger {
+    background: #fff5f5;
+    border: 1px solid #ffb8b8;
+    color: #e03131;
+}
+
+.login-info {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 11px;
+    color: #b2bec3;
+}

@@ -1,0 +1,341 @@
+.retrieval-page {
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #f8f9fc;
+  display: flex;
+  flex-direction: column;
+}
+
+.retrieval-header {
+  background: #4834d4;
+  padding: 24px;
+  padding-top: 20px;
+  color: white;
+  border-radius: 0 0 24px 24px;
+  margin-bottom: 16px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-content h2 {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Status Cards (Blue/Orange) */
+.status-card {
+    margin: 0 24px 20px 24px;
+    border-radius: 16px;
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: all 0.5s ease;
+}
+
+.status-card.blue {
+    background: #2e86de; /* Brighter blue from screenshot */
+}
+
+.status-card.orange {
+    background: #ff9f43;
+}
+
+.status-card.green {
+    background: #16a34a; /* Green */
+}
+
+.status-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-icon-box {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-text h3 {
+    font-size: 16px;
+    margin: 0 0 4px 0;
+    font-weight: 600;
+}
+
+.status-text p {
+    font-size: 13px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.time-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    backdrop-filter: blur(5px);
+}
+
+/* Progress Timeline Card */
+.progress-card {
+    background: white;
+    margin: 0 24px 20px 24px;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2d3436;
+    margin-bottom: 24px;
+}
+
+.timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 19px; /* center of circle */
+    top: 10px;
+    bottom: 30px;
+    width: 2px;
+    background: #dfe6e9;
+    z-index: 0;
+}
+
+.timeline-step {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #dfe6e9; /* Inactive grey */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+    transition: all 0.5s ease;
+}
+
+.step-circle.active {
+    background: #00b894; /* Green */
+}
+
+.step-circle.pending {
+    background: #dfe6e9;
+    color: #b2bec3;
+}
+
+.step-content h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    color: #2d3436;
+}
+
+.step-content p {
+    margin: 0;
+    font-size: 12px;
+    color: #636e72;
+}
+
+/* Parking Details Card */
+.details-card {
+    background: white;
+    margin: 0 24px 20px 24px;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.detail-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.detail-row:last-child {
+    margin-bottom: 0;
+}
+
+.detail-icon {
+    color: #b2bec3;
+    margin-top: 2px;
+}
+
+.detail-info label {
+    display: block;
+    font-size: 12px;
+    color: #b2bec3;
+    margin-bottom: 4px;
+}
+
+.detail-info p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2d3436;
+}
+
+.detail-info span {
+    font-size: 13px;
+    color: #636e72;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Simulated WhatsApp Notification */
+.whatsapp-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    z-index: 1000;
+    display: flex;
+    gap: 12px;
+    animation: slideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideDown {
+    from { top: -100px; opacity: 0; }
+    to { top: 20px; opacity: 1; }
+}
+
+.wa-icon {
+    width: 40px;
+    height: 40px;
+    background: #25D366;
+    border-radius: 50%; /* Circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.wa-content {
+    flex: 1;
+}
+
+.wa-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.wa-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: #2d3436;
+}
+
+.wa-time {
+    font-size: 11px;
+    color: #b2bec3;
+}
+
+.wa-msg {
+    font-size: 12px;
+    color: #636e72;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Call Support Button */
+.support-container {
+    padding: 24px;
+    margin-top: auto;
+}
+
+.support-btn {
+    width: 100%;
+    background: white;
+    border: 1px solid #dfe6e9;
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #2d3436;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Exit Parking Section */
+.exit-card {
+    margin: 0 24px 24px 24px;
+    background: #e6fffa;
+    border: 1px solid #b2f5ea;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.exit-text {
+    font-size: 14px;
+    color: #2d3436;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.exit-btn {
+    width: 100%;
+    background: #00b894;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 184, 148, 0.2);
+    transition: transform 0.2s;
+}
+
+.exit-btn:active {
+    transform: scale(0.98);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
