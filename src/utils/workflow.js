@@ -1,23 +1,35 @@
 // Helper to fetch data
+// Helper to fetch data
+const API_BASE = import.meta.env.VITE_API_URL;
+
 const api = {
-    get: async (url) => {
-        const res = await fetch(url);
-        return res.json();
+    get: async (endpoint) => {
+        const res = await fetch(`${API_BASE}${endpoint}`);
+        if (!res.ok) throw new Error(`API Error: ${res.statusText}`);
+        const text = await res.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.error("Failed to parse JSON:", text.substring(0, 100));
+            throw new Error("Invalid JSON response from server");
+        }
     },
-    post: async (url, data) => {
-        const res = await fetch(url, {
+    post: async (endpoint, data) => {
+        const res = await fetch(`${API_BASE}${endpoint}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
+        if (!res.ok) throw new Error(`API Error: ${res.statusText}`);
         return res.json();
     },
-    patch: async (url, data) => {
-        const res = await fetch(url, {
+    patch: async (endpoint, data) => {
+        const res = await fetch(`${API_BASE}${endpoint}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
+        if (!res.ok) throw new Error(`API Error: ${res.statusText}`);
         return res.json();
     }
 };
@@ -26,7 +38,7 @@ export const Workflow = {
     // Read
     getAll: async () => {
         try {
-            return await api.get('/api/requests');
+            return await api.get('/requests');
         } catch (e) {
             console.error(e);
             return [];
@@ -66,7 +78,7 @@ export const Workflow = {
             status: 'requested',
             timestamp: new Date().toISOString()
         };
-        return await api.post('/api/requests', newRequest);
+        return await api.post('/requests', newRequest);
     },
 
     acceptRequest: async (requestId, driver) => {
@@ -90,7 +102,7 @@ export const Workflow = {
             if (req.status === 'requested') {
                 updates.status = 'assigned';
             }
-            return await api.patch(`/api/requests/${requestId}`, updates);
+            return await api.patch(`/requests/${requestId}`, updates);
         }
     },
 
@@ -116,6 +128,6 @@ export const Workflow = {
             updates.exitTimestamp = new Date().toISOString();
         }
 
-        return await api.patch(`/api/requests/${requestId}`, updates);
+        return await api.patch(`/requests/${requestId}`, updates);
     }
 };
