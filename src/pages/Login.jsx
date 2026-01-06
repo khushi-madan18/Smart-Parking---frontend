@@ -8,30 +8,35 @@ const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         
-        // 1. Get Users
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        
-        // 2. Find User
-        const user = users.find(u => u.email === formData.email && u.password === formData.password);
-        
-        if (user) {
-            // 3. Set Session
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            
-            // 4. Redirect to Role Selection
-            navigate('/dashboard');
-        } else {
-            // Demo Fallback for convenience if empty
-            if (formData.email === 'admin@test.com' && formData.password === 'admin') {
-                const admin = { name: 'Admin', role: 'admin' };
-                localStorage.setItem('currentUser', JSON.stringify(admin));
-                navigate('/super-admin');
+        try {
+            const API_BASE = (import.meta.env.VITE_API_URL || '') + '/api';
+            const res = await fetch(`${API_BASE}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (res.ok) {
+                const user = await res.json();
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                navigate('/dashboard');
             } else {
-                setError('Invalid email or password');
+                // Demo Admin Fallback
+                if (formData.email === 'admin@test.com' && formData.password === 'admin') {
+                    const admin = { id: 0, name: 'Admin', role: 'admin' };
+                    localStorage.setItem('currentUser', JSON.stringify(admin));
+                    navigate('/super-admin');
+                    return;
+                }
+                const data = await res.json();
+                setError(data.error || 'Invalid credentials');
             }
+        } catch (err) {
+            console.error(err);
+            setError('Login failed. Please try again.');
         }
     };
 

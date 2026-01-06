@@ -12,28 +12,32 @@ const Signup = () => {
         role: 'user' // Default role
     });
 
-    const handleSignup = (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
         
-        // 1. Get Existing Users
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        
-        // 2. Check duplicates
-        if (users.find(u => u.email === formData.email)) {
-            alert('User already exists!');
-            return;
-        }
+        try {
+            const API_BASE = (import.meta.env.VITE_API_URL || '') + '/api';
+            const res = await fetch(`${API_BASE}/auth/signup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
 
-        // 3. Add User
-        const newUser = { id: Date.now(), ...formData };
-        users.push(newUser);
-        localStorage.setItem('users', JSON.stringify(users));
-        
-        // 4. Auto Login & Redirect
-        localStorage.setItem('currentUser', JSON.stringify(newUser));
-        
-        // 5. Redirect to Role Selection
-        navigate('/dashboard');
+            if (!res.ok) {
+                const data = await res.json();
+                alert(data.error || 'Signup failed');
+                return;
+            }
+
+            const newUser = await res.json();
+            
+            // Auto Login
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            navigate('/dashboard');
+        } catch (err) {
+            console.error(err);
+            alert('Signup failed. Please try again.');
+        }
     };
 
     return (
