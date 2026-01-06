@@ -1,5 +1,6 @@
 // Helper to fetch data
 // Helper to fetch data
+console.log("MY API URL IS:", (import.meta.env.VITE_API_URL || '') + '/api');
 const API_BASE = (import.meta.env.VITE_API_URL || '') + '/api';
 
 const api = {
