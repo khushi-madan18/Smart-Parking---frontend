@@ -31,9 +31,9 @@ const Home = () => {
         }
 
         // Poll for updates (Simulation of real-time)
-        const checkForUpdates = () => {
+        const checkForUpdates = async () => {
             // 1. Get Active Request
-            const activeReqs = Workflow.getUserActiveRequests(currentUser.id);
+            const activeReqs = await Workflow.getUserActiveRequests(currentUser.id);
             if (activeReqs.length > 0) {
                 setActiveRequest(activeReqs[0]); 
             } else {
@@ -49,7 +49,7 @@ const Home = () => {
                 return 'Mumbai, India';
             };
 
-            const allRequests = Workflow.getAll();
+            const allRequests = await Workflow.getAll();
             const history = allRequests
                 .filter(r => r.userId === currentUser.id && r.status === 'completed')
                 .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Newest first

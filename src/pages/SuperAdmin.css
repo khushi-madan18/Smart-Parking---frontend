@@ -3,18 +3,19 @@
   max-width: 600px;
   margin: 0 auto;
   min-height: 100vh;
-  background: #f8f9fc;
+  background: #fbf7ff; /* Soft Purple Tint */
   display: flex;
   flex-direction: column;
 }
 
 .super-header {
-  background: #7c3aed; /* Purple 600 */
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); /* Deep Purple Gradient */
   padding: 24px 24px 50px 24px;
   color: white;
   border-radius: 0 0 24px 24px;
   position: relative;
   z-index: 10;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
 }
 
 .header-top-row {
@@ -32,7 +33,7 @@
 
 .header-top-row p {
   font-size: 13px;
-  opacity: 0.8;
+  opacity: 0.9;
   margin: 4px 0 0 40px; /* Aligned under title */
 }
 
@@ -46,7 +47,7 @@
     bottom: -24px;
     left: 24px;
     right: 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12); /* Purple shadow */
 }
 
 .sa-tab {
@@ -63,9 +64,9 @@
 }
 
 .sa-tab.active {
-    background: #7c3aed;
-    color: white;
-    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+    background: #f3e8ff; /* Lightest Purple */
+    color: #7c3aed;
+    font-weight: 600;
 }
 
 .badge-dot {
@@ -93,14 +94,15 @@
     width: 100%;
     padding: 14px;
     background: white;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d5ff; /* Purple Border */
     border-radius: 12px;
-    color: #1e293b;
+    color: #4c1d95;
     font-size: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    box-shadow: 0 2px 4px rgba(124, 58, 237, 0.05);
 }
 
 .performance-grid {
@@ -114,7 +116,8 @@
     background: white;
     padding: 16px;
     border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.05); /* Soft purple shadow */
+    border: 1px solid #f3e8ff;
 }
 
 .sa-card h4 {
@@ -127,7 +130,9 @@
 .sa-value {
     font-size: 24px;
     font-weight: 700;
-    color: #7c3aed;
+    background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .full-card {

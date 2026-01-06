@@ -26,14 +26,14 @@ const DriverDashboard = () => {
             return;
         }
 
-        const syncData = () => {
-            const allRequests = Workflow.getAll();
-            const myJob = Workflow.getDriverActive(currentUser.id);
+        const syncData = async () => {
+            const allRequests = await Workflow.getAll();
+            const myJob = await Workflow.getDriverActive(currentUser.id);
             // Only update if not animating locally to prevent flicker
             setActiveJob(prev => (prev && prev._localStatus === 'animating') ? prev : (myJob || null));
 
             // Always check for pending requests to show "New Assignments"
-            const pending = Workflow.getPending();
+            const pending = await Workflow.getPending();
             setPendingRequests(pending);
 
             // Calculate Stats for Today
@@ -63,8 +63,8 @@ const DriverDashboard = () => {
         return () => clearInterval(interval);
     }, [currentUser, navigate]);
 
-    const handleAccept = (req) => {
-        Workflow.acceptRequest(req.id, currentUser);
+    const handleAccept = async (req) => {
+        await Workflow.acceptRequest(req.id, currentUser);
         // Force local update immediately for better UX
         setActiveJob({...req, status: 'assigned', valetId: currentUser.id});
         // Remove from pending immediately to prevent duplicate display
@@ -101,9 +101,9 @@ const DriverDashboard = () => {
              Workflow.updateStatus(activeJob.id, 'retrieving');
         }
 
-        setTimeout(() => {
+        setTimeout(async () => {
             // Update Workflow status to final (parked or vehicle_arrived)
-            Workflow.updateStatus(activeJob.id, finalStatus);
+            await Workflow.updateStatus(activeJob.id, finalStatus);
             
             // Show Success Screen
             setSuccessMsg(successText);

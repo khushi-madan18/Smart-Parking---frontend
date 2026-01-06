@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
     ArrowLeft, Calendar, Ticket, IndianRupee, MapPin, 
     Phone, FileText, CheckCircle, XCircle, Eye, User, Check
 } from 'lucide-react';
+import { Workflow } from '../utils/workflow';
 import './SuperAdmin.css';
 
 const SuperAdmin = () => {
@@ -11,12 +12,50 @@ const SuperAdmin = () => {
     const [activeTab, setActiveTab] = useState('Overview');
     const [pendingDrivers, setPendingDrivers] = useState([]);
     const [selectedDriver, setSelectedDriver] = useState(null);
+    const [requests, setRequests] = useState([]);
 
     // Load pending drivers from localStorage
     useEffect(() => {
         const stored = JSON.parse(localStorage.getItem('pendingDrivers') || '[]');
         setPendingDrivers(stored);
     }, []);
+
+    // Fetch Live Parking Data
+    useEffect(() => {
+        const fetchData = async () => {
+            const all = await Workflow.getAll();
+            setRequests(all);
+        };
+        fetchData();
+        const interval = setInterval(fetchData, 5000); // Refresh every 5s
+        return () => clearInterval(interval);
+    }, []);
+
+    const stats = useMemo(() => {
+        const totalTickets = requests.length;
+        // Mock revenue: Assume completed trips = paid. Or all trips = paid (simpler).
+        // Let's count 'completed' for revenue to be consistent.
+        // Actually, SuperAdmin usually sees totals. Let's assume all created tickets have valid payments (pre-paid or post-paid).
+        const revenue = totalTickets * 150; 
+        
+        const activeParking = requests.filter(r => 
+            ['assigned', 'parked', 'retrieval_requested', 'retrieving', 'vehicle_arrived'].includes(r.status)
+        ).length;
+
+        // Today's Stats
+        const todayStr = new Date().toDateString();
+        const todayReqs = requests.filter(r => new Date(r.timestamp).toDateString() === todayStr);
+        const todayTickets = todayReqs.length;
+        const todayRevenue = todayTickets * 150;
+
+        return {
+            totalTickets,
+            revenue,
+            activeParking,
+            todayTickets,
+            todayRevenue
+        };
+    }, [requests]);
 
     const handleApprove = (id) => {
         const updated = pendingDrivers.filter(d => d.id !== id);
@@ -163,11 +202,11 @@ const SuperAdmin = () => {
                         <div className="performance-grid">
                             <div className="sa-card">
                                 <h4>Tickets Issued</h4>
-                                <div className="sa-value">87</div>
+                                <div className="sa-value">{stats.todayTickets}</div>
                             </div>
                             <div className="sa-card">
                                 <h4>Collection</h4>
-                                <div className="sa-value">₹13,050</div>
+                                <div className="sa-value">₹{stats.todayRevenue.toLocaleString()}</div>
                             </div>
                         </div>
 
@@ -180,7 +219,7 @@ const SuperAdmin = () => {
                                 <Ticket size={20} color="#a855f7" />
                                 <span style={{fontSize:'14px', color:'#475569'}}>Total Tickets</span>
                             </div>
-                            <span style={{fontSize:'16px', fontWeight:'600'}}>1247</span>
+                            <span style={{fontSize:'16px', fontWeight:'600'}}>{stats.totalTickets}</span>
                         </div>
 
                         <div className="full-card">
@@ -188,7 +227,7 @@ const SuperAdmin = () => {
                                 <IndianRupee size={20} color="#10b981" />
                                 <span style={{fontSize:'14px', color:'#475569'}}>Total Collection</span>
                             </div>
-                            <span style={{fontSize:'16px', fontWeight:'600'}}>₹186,450</span>
+                            <span style={{fontSize:'16px', fontWeight:'600'}}>₹{stats.revenue.toLocaleString()}</span>
                         </div>
 
                         <div className="full-card">
@@ -196,7 +235,7 @@ const SuperAdmin = () => {
                                 <MapPin size={20} color="#3b82f6" />
                                 <span style={{fontSize:'14px', color:'#475569'}}>Active Parking</span>
                             </div>
-                            <span style={{fontSize:'16px', fontWeight:'600'}}>45</span>
+                            <span style={{fontSize:'16px', fontWeight:'600'}}>{stats.activeParking}</span>
                         </div>
 
                         <div className="full-card location">

@@ -12,64 +12,68 @@ const ParkingHistory = () => {
     useEffect(() => {
         if (!currentUser) return;
 
-        const all = Workflow.getAll();
-        const myHistory = all.filter(r => r.userId === currentUser.id && r.status === 'completed')
-                             .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-        // Helper to get address based on mall name
-        const getAddress = (mallName) => {
-            if (!mallName) return 'Mumbai, India';
-            if (mallName.includes('Phoenix')) return 'Lower Parel, Mumbai';
-            if (mallName.includes('Inorbit')) return 'Malad West, Mumbai';
-            if (mallName.includes('R City')) return 'Ghatkopar, Mumbai';
-            return 'Mumbai, India';
+        const fetchHistory = async () => {
+             const all = await Workflow.getAll();
+             const myHistory = all.filter(r => r.userId === currentUser.id && r.status === 'completed')
+                                  .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+     
+             // Helper to get address based on mall name
+             const getAddress = (mallName) => {
+                 if (!mallName) return 'Mumbai, India';
+                 if (mallName.includes('Phoenix')) return 'Lower Parel, Mumbai';
+                 if (mallName.includes('Inorbit')) return 'Malad West, Mumbai';
+                 if (mallName.includes('R City')) return 'Ghatkopar, Mumbai';
+                 return 'Mumbai, India';
+             };
+     
+             const formatted = myHistory.map(r => {
+                  // Use Parked Time (Actual Entry) if available, otherwise Booking Time
+                  const entry = r.parkedTimestamp ? new Date(r.parkedTimestamp) : new Date(r.timestamp);
+                  let exitTimeStr = '--';
+                  let durationStr = '--';
+     
+                  // Calculate Duration & Price
+                  let priceVal = 50; // Minimum price
+                  
+                  if (r.exitTimestamp) {
+                     const exit = new Date(r.exitTimestamp);
+                     exitTimeStr = exit.toLocaleString('en-US', {hour: 'numeric', minute:'2-digit', hour12: true});
+                     
+                     const diffMs = exit - entry;
+                     const totalMins = Math.floor(diffMs / 60000);
+                     const h = Math.floor(totalMins / 60);
+                     const m = totalMins % 60;
+                     durationStr = `${h}h ${m}m`;
+     
+                     // Pricing Logic: ₹50 for first hour, ₹30 for subsequent hours
+                     // Or simply ₹50/hr for simplicity to match the ₹150 example (3hrs)
+                     const hours = Math.ceil(totalMins / 60);
+                     priceVal = Math.max(50, hours * 50);
+                  }
+     
+                  return {
+                     id: r.id,
+                     place: r.location || 'Phoenix Mall',
+                     location: getAddress(r.location),
+                     price: `₹${priceVal}`,
+                     status: 'completed',
+                     date: entry.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'}),
+                     car: r.vehicle?.plate || 'Unknown',
+                     vehicleModel: r.vehicle?.model || 'Vehicle',
+                     entryTime: entry.toLocaleString('en-US', {hour: 'numeric', minute:'2-digit', hour12: true}),
+                     exitTime: exitTimeStr,
+                     ticketId: `TK-${entry.getFullYear()}-${String(r.id).slice(-6)}`,
+                     duration: durationStr,
+                     rawPrice: priceVal,
+                     rawEntry: entry,
+                     rawExit: r.exitTimestamp ? new Date(r.exitTimestamp) : null
+                  };
+             });
+             
+             setHistoryData(formatted);
         };
 
-        const formatted = myHistory.map(r => {
-             // Use Parked Time (Actual Entry) if available, otherwise Booking Time
-             const entry = r.parkedTimestamp ? new Date(r.parkedTimestamp) : new Date(r.timestamp);
-             let exitTimeStr = '--';
-             let durationStr = '--';
-
-             // Calculate Duration & Price
-             let priceVal = 50; // Minimum price
-             
-             if (r.exitTimestamp) {
-                const exit = new Date(r.exitTimestamp);
-                exitTimeStr = exit.toLocaleString('en-US', {hour: 'numeric', minute:'2-digit', hour12: true});
-                
-                const diffMs = exit - entry;
-                const totalMins = Math.floor(diffMs / 60000);
-                const h = Math.floor(totalMins / 60);
-                const m = totalMins % 60;
-                durationStr = `${h}h ${m}m`;
-
-                // Pricing Logic: ₹50 for first hour, ₹30 for subsequent hours
-                // Or simply ₹50/hr for simplicity to match the ₹150 example (3hrs)
-                const hours = Math.ceil(totalMins / 60);
-                priceVal = Math.max(50, hours * 50);
-             }
-
-             return {
-                id: r.id,
-                place: r.location || 'Phoenix Mall',
-                location: getAddress(r.location),
-                price: `₹${priceVal}`,
-                status: 'completed',
-                date: entry.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'}),
-                car: r.vehicle?.plate || 'Unknown',
-                vehicleModel: r.vehicle?.model || 'Vehicle',
-                entryTime: entry.toLocaleString('en-US', {hour: 'numeric', minute:'2-digit', hour12: true}),
-                exitTime: exitTimeStr,
-                ticketId: `TK-${entry.getFullYear()}-${String(r.id).slice(-6)}`,
-                duration: durationStr,
-                rawPrice: priceVal,
-                rawEntry: entry,
-                rawExit: r.exitTimestamp ? new Date(r.exitTimestamp) : null
-             };
-        });
-        
-        setHistoryData(formatted);
+        fetchHistory();
     }, [currentUser]);
 
     const [expandedId, setExpandedId] = useState(null);

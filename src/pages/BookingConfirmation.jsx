@@ -16,23 +16,24 @@ const BookingConfirmation = () => {
       }
   }, [currentUser, navigate]);
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     setIsProcessing(true);
     
     // Simulate payment processing
+    // We can keep the delay for UX simulation + async call
+    
+    if (currentUser) {
+        const model = document.getElementById('vehicle-model').value || 'Toyota Camry';
+        const plate = document.getElementById('vehicle-plate').value || 'MH 12 AB 1234';
+        
+        await Workflow.createRequest(
+            currentUser, 
+            { plate, model }, 
+            'Inorbit Mall'
+        );
+    }
+    
     setTimeout(() => {
-        // Create actual request in workflow
-        if (currentUser) {
-            const model = document.getElementById('vehicle-model').value || 'Toyota Camry';
-            const plate = document.getElementById('vehicle-plate').value || 'MH 12 AB 1234';
-            
-            Workflow.createRequest(
-                currentUser, 
-                { plate, model }, 
-                'Inorbit Mall'
-            );
-        }
-
         setIsProcessing(false);
         // Navigate to Home to see the live status
         navigate('/home');

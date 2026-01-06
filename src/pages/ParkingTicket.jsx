@@ -25,8 +25,8 @@ const ParkingTicket = () => {
         return;
     }
 
-    const checkActive = () => {
-        const reqs = Workflow.getUserActiveRequests(currentUser.id);
+    const checkActive = async () => {
+        const reqs = await Workflow.getUserActiveRequests(currentUser.id);
         if (reqs && reqs.length > 0) {
             setActiveRequest(reqs[0]);
         } else {
@@ -45,11 +45,11 @@ const ParkingTicket = () => {
 
   const isRetrieval = activeRequest && ['retrieval_requested', 'retrieving', 'vehicle_arrived'].includes(activeRequest.status);
 
-  const handleRetrieval = () => {
+  const handleRetrieval = async () => {
       if (activeRequest) {
           // Only initiate retrieval if not already in progress
           if (!isRetrieval) {
-              Workflow.updateStatus(activeRequest.id, 'retrieval_requested');
+              await Workflow.updateStatus(activeRequest.id, 'retrieval_requested');
           }
           
           // Navigate to Retrieval Timeline Page

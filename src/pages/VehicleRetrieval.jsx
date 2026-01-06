@@ -23,8 +23,8 @@ const VehicleRetrieval = () => {
     useEffect(() => {
         if (!currentUser) return;
 
-        const checkStatus = () => {
-            const req = Workflow.getActive(currentUser.id);
+        const checkStatus = async () => {
+            const req = await Workflow.getActive(currentUser.id);
             if (req) {
                 setActiveRequest(req);
                 // Map backend status to UI timeline status
@@ -46,9 +46,9 @@ const VehicleRetrieval = () => {
         return () => clearInterval(interval);
     }, [currentUser]);
 
-    const handleComplete = () => {
+    const handleComplete = async () => {
         if (activeRequest) {
-            Workflow.updateStatus(activeRequest.id, 'completed');
+            await Workflow.updateStatus(activeRequest.id, 'completed');
             navigate('/home');
         }
     };

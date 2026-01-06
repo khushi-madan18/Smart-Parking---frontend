@@ -1,83 +1,64 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
     UserPlus, Search, Car, Phone, Edit, MapPin, Clock 
 } from 'lucide-react';
+import { Workflow } from '../utils/workflow';
 import './ManagerDashboard.css';
-
-const initialData = [
-    {
-        id: 1,
-        carModel: 'Honda City',
-        plate: 'MH 02 AB 1234',
-        status: 'Parked',
-        customer: 'Amit Sharma',
-        valet: 'Rajesh Kumar',
-        valetId: 'V001',
-        location: 'Phoenix Mall',
-        subLocation: 'Lower Parel, Mumbai',
-        entryTime: '4 Jan, 06:59 pm',
-        duration: '2h 0m'
-    },
-    {
-        id: 2,
-        carModel: 'Maruti Swift',
-        plate: 'MH 12 CD 5678',
-        status: 'Retrieving',
-        customer: 'Priya Verma',
-        valet: 'Vikram Singh',
-        valetId: 'V003',
-        location: 'Phoenix Mall',
-        subLocation: 'Lower Parel, Mumbai',
-        entryTime: '4 Jan, 05:30 pm',
-        duration: '3h 30m'
-    },
-    {
-        id: 3,
-        carModel: 'Toyota Innova',
-        plate: 'MH 14 EF 9012',
-        status: 'Parked',
-        customer: 'Rahul Roy',
-        valet: 'Suresh Patil',
-        valetId: 'V002',
-        location: 'Phoenix Mall',
-        subLocation: 'Level 1 - C56',
-        entryTime: '4 Jan, 07:15 pm',
-        duration: '1h 45m'
-    },
-    {
-        id: 4,
-        carModel: 'Hyundai Creta',
-        plate: 'MH 04 GH 3456',
-        status: 'Parked',
-        customer: 'Sneha Gupta',
-        valet: 'Rajesh Kumar',
-        valetId: 'V001',
-        location: 'Phoenix Mall',
-        subLocation: 'Level 2 - B12',
-        entryTime: '4 Jan, 08:00 pm',
-        duration: '1h 0m'
-    },
-    {
-        id: 5,
-        carModel: 'BMW X1',
-        plate: 'MH 01 IJ 7890',
-        status: 'Returned',
-        customer: 'Kabir Bedi',
-        valet: 'Vikram Singh',
-        valetId: 'V003',
-        location: 'Phoenix Mall',
-        subLocation: 'Output Gate',
-        entryTime: '4 Jan, 04:00 pm',
-        duration: 'Completed'
-    }
-];
 
 const ManagerDashboard = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('All');
     const [searchTerm, setSearchTerm] = useState('');
-    const [parkingData] = useState(initialData);
+    const [parkingData, setParkingData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const allRequests = await Workflow.getAll();
+            const formatted = allRequests.map(r => {
+                let status = 'Parked';
+                if (['retrieval_requested', 'retrieving', 'vehicle_arrived'].includes(r.status)) status = 'Retrieving';
+                if (r.status === 'completed') status = 'Returned';
+                if (r.status === 'requested' || r.status === 'assigned') status = 'Parked'; // Grouping pending as parked/active
+
+                // Calculate duration
+                const entryTime = r.parkedTimestamp ? new Date(r.parkedTimestamp) : new Date(r.timestamp);
+                let durationStr = '--';
+                if (r.exitTimestamp) {
+                    const diff = Math.floor((new Date(r.exitTimestamp) - entryTime) / 60000);
+                    const h = Math.floor(diff / 60);
+                    const m = diff % 60;
+                    durationStr = `${h}h ${m}m`;
+                } else {
+                    const diff = Math.floor((Date.now() - entryTime) / 60000);
+                    const h = Math.floor(diff / 60);
+                    const m = diff % 60;
+                    durationStr = `${h}h ${m}m`;
+                }
+
+                return {
+                    id: r.id,
+                    carModel: r.vehicle?.model || 'Vehicle',
+                    plate: r.vehicle?.plate || 'Unknown',
+                    status: status,
+                    customer: r.userName || 'Guest',
+                    valet: r.valetName || (status === 'Parked' && r.status === 'requested' ? 'Unassigned' : 'Unknown'),
+                    valetId: r.valetId ? `V${String(r.valetId).slice(-3)}` : '--',
+                    location: r.location || 'Phoenix Mall',
+                    subLocation: r.spotId || 'TBD',
+                    entryTime: entryTime.toLocaleString('en-US', {day:'numeric', month:'short', hour:'numeric', minute:'2-digit', hour12:true}),
+                    duration: durationStr,
+                    rawStatus: r.status // For detailed filtering if needed
+                };
+            }).sort((a, b) => b.id - a.id); // Newest first
+
+            setParkingData(formatted);
+        };
+
+        fetchData();
+        const interval = setInterval(fetchData, 2000);
+        return () => clearInterval(interval);
+    }, []);
 
     // Calculate Counts
     const counts = useMemo(() => {
@@ -95,6 +76,13 @@ const ManagerDashboard = () => {
         return stats;
     }, [parkingData]);
 
+    // Calculate Revenue (Mock logic based on Returned cars)
+    const revenue = useMemo(() => {
+        // ₹50 flat for simplicty or dynamic based on duration if we parsed it
+        // Let's assume average ₹100 per completed car
+        return counts.Returned * 150; 
+    }, [counts]);
+
     // Filter Data
     const filteredData = useMemo(() => {
         return parkingData.filter(item => {
@@ -104,23 +92,13 @@ const ManagerDashboard = () => {
                 item.carModel.toLowerCase().includes(lowerSearch) ||
                 item.plate.toLowerCase().includes(lowerSearch) ||
                 item.customer.toLowerCase().includes(lowerSearch) ||
-                item.valet.toLowerCase().includes(lowerSearch);
+                (item.valet && item.valet.toLowerCase().includes(lowerSearch));
             
             return matchesTab && matchesSearch;
         });
     }, [activeTab, searchTerm, parkingData]);
 
     // Derived Status Classes
-    const getStatusClass = (status) => {
-        switch(status) {
-            case 'Parked': return 'parked';
-            case 'Retrieving': return 'retrieving'; // You might need CSS for this
-            case 'Returned': return 'returned';     // And this
-            default: return '';
-        }
-    };
-    
-    // Inline styles for chips if not in CSS
     const getBadgeStyle = (status) => {
         if (status === 'Parked') return { background: '#ecfdf5', color: '#10b981' };
         if (status === 'Retrieving') return { background: '#fff7ed', color: '#f97316' };
@@ -157,7 +135,7 @@ const ManagerDashboard = () => {
                 </div>
                 <div className="stat-card">
                     <h4>Revenue</h4>
-                    <span className="value">₹825</span>
+                    <span className="value">₹{revenue}</span>
                 </div>
             </div>
 
