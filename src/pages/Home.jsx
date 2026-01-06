@@ -51,7 +51,7 @@ const Home = () => {
 
             const allRequests = await Workflow.getAll();
             const history = allRequests
-                .filter(r => r.userId === currentUser.id && r.status === 'completed')
+                .filter(r => r.userId == currentUser.id && r.status === 'completed')
                 .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Newest first
                 .slice(0, 5) // Last 10 entries
                 .map(r => {

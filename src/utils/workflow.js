@@ -53,17 +53,17 @@ export const Workflow = {
 
     getUserActiveRequests: async (userId) => {
         const all = await Workflow.getAll();
-        return all.filter(r => r.userId === userId && r.status !== 'archived' && r.status !== 'completed').sort((a, b) => b.id - a.id);
+        return all.filter(r => r.userId == userId && r.status !== 'archived' && r.status !== 'completed').sort((a, b) => b.id - a.id);
     },
 
     getDriverActive: async (driverId) => {
         const all = await Workflow.getAll();
-        return all.find(r => r.valetId === driverId && r.status !== 'completed' && r.status !== 'archived');
+        return all.find(r => r.valetId == driverId && r.status !== 'completed' && r.status !== 'archived');
     },
 
     getActive: async (userId) => {
         const all = await Workflow.getAll();
-        return all.filter(r => r.userId === userId && r.status !== 'completed' && r.status !== 'archived')
+        return all.filter(r => r.userId == userId && r.status !== 'completed' && r.status !== 'archived')
             .sort((a, b) => b.id - a.id)[0];
     },
 
@@ -94,7 +94,7 @@ export const Workflow = {
 
         // Let's fetch first to be safe
         const requests = await Workflow.getAll();
-        const req = requests.find(r => r.id === requestId);
+        const req = requests.find(r => r.id == requestId);
         if (req) {
             const updates = {
                 valetId: driver.id,
