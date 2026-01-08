@@ -10,6 +10,18 @@ const BookingConfirmation = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentUser] = useState(() => JSON.parse(localStorage.getItem('currentUser') || 'null'));
 
+  const [defaultVehicle, setDefaultVehicle] = useState({ model: 'Toyota Camry', plate: 'MH 12 AB 1234' });
+
+  useEffect(() => {
+      const savedVehicles = JSON.parse(localStorage.getItem('userVehicles') || '[]');
+      if (currentUser && savedVehicles.length > 0) {
+          const myVehicle = savedVehicles.find(v => v.ownerId === currentUser.id);
+          if (myVehicle) {
+              setDefaultVehicle({ model: myVehicle.model, plate: myVehicle.plate });
+          }
+      }
+  }, [currentUser]);
+
   useEffect(() => {
       if (!currentUser) {
           navigate('/login');
@@ -37,7 +49,7 @@ const BookingConfirmation = () => {
         setIsProcessing(false);
         // Navigate to Home to see the live status
         navigate('/home');
-    }, 2000);
+    }, 500);
   };
 
   return (
@@ -73,7 +85,8 @@ const BookingConfirmation = () => {
                 placeholder="e.g. Toyota Camry"
                 style={{width:'100%', padding:'8px 12px', borderRadius:'8px', border:'1px solid #e2e8f0', fontSize:'14px', marginBottom:'12px'}}
                 id="vehicle-model"
-                defaultValue="Toyota Camry"
+                key={`model-${defaultVehicle.model}`}
+                defaultValue={defaultVehicle.model}
             />
             
             <label style={{fontSize:'12px', color:'#64748b', display:'block', marginBottom:'4px'}}>Vehicle Plate Number</label>
@@ -82,7 +95,8 @@ const BookingConfirmation = () => {
                 placeholder="e.g. MH 12 AB 1234"
                 style={{width:'100%', padding:'8px 12px', borderRadius:'8px', border:'1px solid #e2e8f0', fontSize:'14px', textTransform:'uppercase'}}
                 id="vehicle-plate"
-                defaultValue="MH 12 AB 1234"
+                key={`plate-${defaultVehicle.plate}`}
+                defaultValue={defaultVehicle.plate}
             />
         </div>
       </div>

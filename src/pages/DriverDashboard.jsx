@@ -109,7 +109,7 @@ const DriverDashboard = () => {
             setSuccessMsg(successText);
             setShowSuccess(true);
             
-            // Allow success screen to show for 2s then clear
+            // Allow success screen to show for 1s then clear
             setTimeout(() => {
                 setShowSuccess(false);
                 // For both parking and retrieval (arrived), the driver's job is done/waiting
@@ -127,8 +127,8 @@ const DriverDashboard = () => {
                 } else {
                      setActiveJob(null);
                 }
-            }, 2000);
-        }, 3000); // 3s animation
+            }, 1000);
+        }, 1000); // 1s animation
     };
 
     // Computed Properties

@@ -9,15 +9,15 @@ const Scan = () => {
   const [isDetected, setIsDetected] = useState(false);
 
   useEffect(() => {
-    // Simulate finding a QR code after 2 seconds
+    // Simulate finding a QR code after 0.5 seconds
     const detectionTimer = setTimeout(() => {
         setIsDetected(true);
-    }, 2000);
+    }, 500);
 
     // Show popup shortly after detection simulation
     const popupTimer = setTimeout(() => {
       setShowPopup(true);
-    }, 2500);
+    }, 800);
 
     return () => {
         clearTimeout(detectionTimer);

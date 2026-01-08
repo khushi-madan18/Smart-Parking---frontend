@@ -143,13 +143,22 @@
     margin-bottom: 16px;
 }
 
+/* List Container */
+.history-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .history-card {
     background: white;
-    border-radius: 16px;
-    padding: 16px;
+    border-radius: 20px;
+    padding: 20px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     border: 1px solid #f1f5f9;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: none; 
 }
 
 .card-row {
@@ -320,6 +329,8 @@
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 24px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .active-card-top {
